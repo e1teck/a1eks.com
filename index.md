@@ -1,3 +1,1 @@
-## a1eks.com
-
-[contact](mailto:me@a1eks.com)
+[a1eks.com](mailto:me@a1eks.com)
