@@ -9,7 +9,7 @@
     src: url('fonts/helvetica/helveticaltstd-lightcond.otf')
 }
 
-@media all and (min-width: 730px) and (max-width: 1111px) {
+@media all and (min-width: 768px) and (max-width: 1111px) {
     .container {
         position: relative;
         margin: 0 auto;
@@ -846,7 +846,7 @@
 
 }
 
-@media all and (max-width: 729px) {
+@media all and (min-width: 480px) and (max-width: 767px) {
    .container {
         position: relative;
         margin: 0 auto;
@@ -1257,7 +1257,426 @@
         margin: 0 auto;
     }
     .skills {
-        width: 468px;
+        width: 458px;
+        margin: 0 auto;
+    }
+    .biography {
+        color: #ffffff;
+    }
+}
+
+@media all and (max-width: 479px) {
+   .container {
+        position: relative;
+        margin: 0 auto;
+    }
+
+    .header {
+        border-bottom: 1px solid #f8f6f6;
+        background: #FFFFFF;
+    }
+
+    .logo {
+        float: left;
+        display: inline-block;
+        text-decoration: none;
+        padding-left: 50px
+    }
+
+    .logo_text_main {
+        margin: 37px 0 0 0;
+        font-family: BebasNeueBold;
+        color:  #404040;
+        font-size: 36.5px;
+        font-weight: 400;
+        line-height: 19px;
+        text-align: justify;
+    }
+
+    .logo_text {
+        margin: 5px 0 0 0;
+        font-family: Arial;
+        color:  #404040;
+        font-size: 14.5px;
+        font-weight: 400;
+        line-height: 19px;
+        text-align: justify;
+    }
+
+    .main_menu {
+        width: 100%;
+        height: auto;
+        float: left;
+    }
+    .main_menu ul {
+        display: block;
+        max-height: 0;
+        overflow: hidden;
+        -webkit-transition: max-height 0.3s;
+        -moz-transition: max-height 0.3s;
+        -ms-transition: max-height 0.3s;
+        -o-transition: max-height 0.3s;
+        transition: max-height 0.3s;
+        width: 100%;
+        height: inherit;
+        margin: 0;
+        padding: 0;
+    }
+    .main_menu ul li a {
+        text-align: center;
+        width: 100%;
+        line-height: 50px;
+    }
+    a {
+        text-decoration: none;
+    }
+    li {
+        list-style: none;
+    }
+
+    .main_menu ul a {
+        width: 20%;
+        height: inherit;
+        display: inline-block;
+        color: #404040;
+    }
+    .main_menu_button_current, .main_menu ul a:hover {
+        background-color: #d45e5e;
+        color:  #ffffff !important;
+    }
+
+    .menu-icon {
+        width: 66px;
+        height: inherit;
+        display: block;
+        position: absolute;
+        top: 28px;
+        right: 0;
+        cursor: pointer;
+    }
+    #menuToggle:checked ~ ul {
+        max-height: 350px;
+    }
+    .menu-icon i {
+        font-size: 1.7em;
+    }
+
+    .quote {
+        position: relative;
+        margin: 0 auto;
+    }
+
+    .quote_el {
+        color: #d5d5d5;
+        font-size: 50px;
+        font-weight: 900;
+        line-height: 36px;
+        text-align: center;
+        padding-top: 77px;
+    }
+
+    .quote_text {
+        font-family: Cambria;
+        color:  #404040;
+        font-size: 22.5px;
+        font-style: italic;
+        line-height: 36px;
+        text-align: center;
+        padding: 20px;
+    }
+
+    .header_bottom_img  {
+        z-index: -1;
+        position: relative;
+        margin: 0 auto;
+    }
+    .line_gradient {
+        background: url("img/line.png") no-repeat;
+        height: 8px;
+    }
+
+    main {
+        min-height: 350px;
+        padding-bottom: 80px;
+    }
+
+    .main_container {
+        position: relative;
+        margin: 0 auto;
+        width: 400px;
+    }
+
+    h1 {
+        font-family: Cambria;
+        color:  #404040;
+        font-size: 22.5px;
+        font-style: italic;
+        line-height: 36px;
+    }
+
+    .figure_works:nth-child(2n) {
+        margin-right: 0;
+    }
+
+    .figure_works {
+        float: left;
+        display: block;
+        border: 1px solid #d9d8d8;
+        border-radius: 4px;
+        text-decoration: none;
+        margin: 10px 0;
+        width: 400px;
+    }
+
+    .figure_works:hover {
+        box-shadow: 3px 3px 2px #eeebeb;
+        border-radius: 4px;
+        cursor: pointer;
+        text-decoration: none;
+        background: rgba(215, 215, 215, 0.17);
+    }
+
+    .figure_works img {
+        border: 1px solid #d9d8d8;
+        border-radius: 4px 4px 0 0;
+        height: 376px;
+        width: 399px;
+    }
+
+    .about_work {
+        margin: 10px 0;
+        min-height: 100px;
+    }
+
+    .about_work_header {
+        margin: 10px;
+        font-family: HelveticaLT;
+        color: #404040;
+        font-size: 20px;
+        text-align: center;
+        overflow: hidden;
+        font-weight: bold;
+    }
+
+    .about_work_tags {
+        margin: 0 10px;
+        font-family: HelveticaLT;
+        color: #8c8484;
+        font-size: 17px;
+    }
+
+    .about_me_container {
+        padding: 10px;
+        background-color:  #d45e5e;
+    }
+
+    .about_me {
+        position: relative;
+        margin: 0 auto;
+    }
+
+    .biography>header {
+        float: left;
+    }
+
+    .biography>.soc_icons {
+        float: right;
+    }
+
+    .soc_icons>i {
+        font-size: 48px;
+    }
+
+    .soc_icons_item {
+        float: left;
+        width: 40px;
+        height: 50px;
+        text-align: center;
+        line-height: 50px;
+        color: white;
+        font-size: 30px;
+        cursor: pointer;
+    }
+
+    .biography>header>address>i {
+        font-size: 18px;
+    }
+
+    .biography>header>address>a{
+        padding-left: 7px;
+        font-family: PTSans;
+    }
+
+    .biography>header>h2{
+        margin: 0 0 4px 0;
+        font-family: Cambria;
+        font-size: 24.5px;
+        font-style: italic;
+        line-height: 36px;
+        text-align: center;
+    }
+
+    .biography>p {
+        font-family: PTSans;
+        font-size: 14.5px;
+        text-align: justify;
+        font-weight: 400;
+        line-height: 22px;
+    }
+
+
+    .skills>header>h2{
+        font-family: Cambria;
+        color:  #ffffff;
+        font-size: 24.5px;
+        font-weight: 400;
+        line-height: 36px;
+        text-align: center;
+    }
+
+    .skill_list {
+        padding: 30px 20px 0 70px;
+    }
+
+    .skill_list>.list_item {
+        font-family: PTSans;
+        color:  #ffffff;
+        font-size: 18.5px;
+        font-weight: 400;
+        line-height: 20px;
+        text-align: left;
+        padding: 0 0 14px 0;
+    }
+
+    .fill {
+        height: 10px;
+        background-color:  #282828;
+    }
+
+    .fill_10{
+        width: 20px;
+    }
+
+    .fill_20{
+        width: 40px;
+    }
+
+    .fill_30{
+        width: 60px;
+    }
+
+    .fill_40{
+        width: 80px;
+    }
+
+    .fill_50{
+        width: 100px;
+    }
+
+    .fill_60{
+        width: 120px;
+    }
+
+    .fill_70{
+        width: 140px;
+    }
+
+    .fill_80{
+        width: 160px;
+    }
+
+    .fill_90{
+        width: 180px;
+    }
+
+    .fill_100{
+        width: 200px;
+    }
+
+    .progress {
+        float: right;
+        width: 200px;
+        height: 10px;
+        background-color:  #e27878;
+        margin-top: 5px;
+    }
+
+    .photo_about_me {
+        float: left;
+        margin-left: 0px;
+        margin-top: -58px;
+
+    }
+    .photo_about_me_img{
+        border: 5px solid #fff;
+        overflow: hidden;
+        height: 137px;
+        width: 120px;
+    }
+
+    .clr {
+        clear: both;
+    }
+
+
+    footer {
+        background-color:  #282828;
+        height: 39px;
+    }
+
+    footer>.container>p {
+        font-family: PTSans;
+        color: #949494;
+        font-size: 12.5px;
+        font-weight: 400;
+        line-height: 3em;
+        text-align: left;
+        margin: 0px;
+        float: right;
+    }
+
+    .image_block {
+        display: block;
+        margin: -18px auto 0 auto;
+        height: 200px;
+        border-radius: 50%;
+    }
+
+    .image_about_me {
+        height: 137px;
+        width: 133px;
+        border: 5px solid #fff;
+        overflow: hidden;
+        background-size: cover;
+        background-position: center;
+    }
+    .image_about_me_gray {
+        background: url("/img/photo_about_me_gray.jpg") no-repeat;
+        overflow: hidden;
+        background-size: cover;
+        background-position: center;
+    }
+
+    .image_about_me:hover {
+        background: url("/img/photo_about_me.jpg") no-repeat;
+        overflow: hidden;
+        background-size: cover;
+        background-position: center;
+    }
+
+
+    .page_title {
+        font-family: HelveticaLT;
+        font-size: 21px;
+        text-align: justify;
+        text-transform: uppercase;
+    }
+
+    .biography {
+        margin: 0 auto;
+    }
+    .skills {
+        width: 420px;
         margin: 0 auto;
     }
     .biography {
@@ -1276,7 +1695,7 @@ body {
     display: none;
 }
 
-@media all and (min-width: 729px) {
+@media all and (min-width: 767px) {
     .menu-icon {
         display: none;
     }
