@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>AioHTTP vs FastAPI: When to Choose Which — Aleksei Ryzhkov</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="description" content="Both are solid async Python frameworks, but they solve different problems. After using both in production, here's my honest comparison." />
+    <link rel="canonical" href="https://a1eks.com/blog/aiohttp-vs-fastapi.html" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://a1eks.com/blog/aiohttp-vs-fastapi.html" />
+    <meta property="og:title" content="AioHTTP vs FastAPI: When to Choose Which" />
+    <meta property="og:description" content="Both are solid async Python frameworks, but they solve different problems. After using both in production, here's my honest comparison." />
+    <meta property="og:image" content="https://a1eks.com/img/profile.jpg" />
+    <meta property="article:published_time" content="2025-03-15" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/custom.css">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-GS7V13EPN1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date()); gtag('config', 'G-GS7V13EPN1');
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "headline": "AioHTTP vs FastAPI: When to Choose Which",
+      "description": "Both are solid async Python frameworks, but they solve different problems. After using both in production, here's my honest comparison.",
+      "datePublished": "2025-03-15",
+      "author": {
+        "@type": "Person",
+        "name": "Aleksei Ryzhkov",
+        "url": "https://a1eks.com"
+      },
+      "url": "https://a1eks.com/blog/aiohttp-vs-fastapi.html"
+    }
+    </script>
+  </head>
+  <body>
+    <div class="preloader">
+      <div class="preloader-animation"><div class="preloader-spinner"></div></div>
+    </div>
+
+    <nav class="fw-topnav">
+      <div class="fw-topnav-inner">
+        <a href="/index.html" class="fw-nav-brand">
+          <img src="/img/profile.jpg" class="fw-nav-brand-photo" alt="Aleksei Ryzhkov">
+          <div>
+            <span class="fw-nav-brand-name">Aleksei Ryzhkov</span>
+            <span class="fw-nav-brand-tagline">Python Backend Developer</span>
+          </div>
+        </a>
+        <button class="fw-nav-toggle" id="fw-nav-toggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        <ul class="fw-nav-links" id="fw-nav-links">
+          <li><a href="/index.html">About</a></li>
+          <li><a href="/resume.html">Resume</a></li>
+          <li><a href="/portfolio.html">Portfolio</a></li>
+          <li><a href="/blog.html" class="nav-active">Blog</a></li>
+          <li><a href="/contact.html">Contact</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="page-wrapper">
+      <div class="page-content site-content">
+        <div class="content-area">
+          <div class="single-page-content">
+            <div class="content-wrapper">
+
+              <div class="project-page-header">
+                <a href="/blog.html" class="back-link">&larr; Back to Blog</a>
+                <h1>AioHTTP vs FastAPI: When to Choose Which</h1>
+                <p class="post-meta">
+                  <span>2025-03-15</span>
+                  &nbsp;·&nbsp;
+<span class="post-tag">Python</span> <span class="post-tag">Backend</span> <span class="post-tag">AioHTTP</span>                </p>
+              </div>
+
+
+              <div class="post-body">
+                <p>I've shipped production services with both AioHTTP and FastAPI. They're often compared, but the real question isn't "which is better" — it's "which fits your situation."</p>
+
+<h2>AioHTTP: raw power, full control</h2>
+<p>AioHTTP gives you a low-level HTTP server and client. There's no magic. You wire up routes manually, handle request parsing yourself, and choose every dependency. This means:</p>
+<ul>
+  <li>Excellent for services where you need tight control over the request lifecycle</li>
+  <li>Great when you're building something that doesn't fit the typical REST CRUD pattern</li>
+  <li>No automatic validation — you write it or bring your own library</li>
+</ul>
+
+<h2>FastAPI: productivity and standards</h2>
+<p>FastAPI is built on Starlette and Pydantic. It gives you automatic request validation, OpenAPI docs out of the box, and a clean dependency injection system. The tradeoff:</p>
+<ul>
+  <li>Pydantic adds overhead — measurable on very high-throughput endpoints</li>
+  <li>The "magic" of automatic validation can hide bugs if you don't understand what's happening</li>
+  <li>Excellent for teams and APIs consumed by other developers</li>
+</ul>
+
+<h2>My rule of thumb</h2>
+<p>If the service has a public API or a team consuming it — use FastAPI. The automatic docs and validation save more time than they cost.</p>
+<p>If the service is internal, performance-critical, or has unusual requirements (WebSocket-heavy, custom protocols, streaming) — AioHTTP gives you more room to breathe.</p>
+
+<blockquote>The best framework is the one your team can debug at 2am without reading the docs.</blockquote>
+
+              </div>
+
+              <div class="p-30"></div>
+              <a href="/blog.html" class="back-link">&larr; Back to Blog</a>
+
+            </div>
+          </div>
+
+          <footer class="site-footer clearfix">
+            <div class="footer-social">
+              <ul class="footer-social-links">
+                <li><a href="https://github.com/e1teck/" target="_blank">GitHub</a></li>
+                <li><a href="https://t.me/the_a1eks" target="_blank">Telegram</a></li>
+                <li><a href="https://twitter.com/Alexey38483641" target="_blank">Twitter</a></li>
+                <li><a href="https://www.linkedin.com/in/the-a1eks" target="_blank">LinkedIn</a></li>
+              </ul>
+            </div>
+            <div class="footer-copyrights">
+              <p>© 2020 Aleksei Ryzhkov. All rights reserved.</p>
+            </div>
+          </footer>
+        </div>
+      </div>
+    </div>
+
+    <script src="/js/jquery-2.1.3.min.js"></script>
+    <script src="/js/imagesloaded.pkgd.min.js"></script>
+    <script src="/js/app.js"></script>
+  </body>
+</html>

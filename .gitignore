@@ -1,0 +1,7 @@
+# Generator sources — not needed on GitHub Pages
+proj_deploy/
+
+# OS / IDE
+.DS_Store
+.idea/
+*.swp

@@ -1,0 +1,924 @@
+/* ===================================================================
+   A1EKS Portfolio — layout + top navigation
+   No template main.js used — see js/app.js
+   =================================================================== */
+
+/* ---------------------------------------------------------------
+   1. Base reset
+   NOTE: template main.css sets html/body to position:fixed +
+   overflow:hidden — we override that here unconditionally.
+--------------------------------------------------------------- */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+html {
+  position: static !important;
+  overflow: visible !important;
+  height: auto !important;
+  min-height: 100% !important;
+  scroll-behavior: smooth;
+}
+
+body {
+  position: static !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  height: auto !important;
+  min-height: 100vh;
+  background: #f0f2f5;
+  font-family: 'Poppins', Arial, sans-serif;
+}
+
+/* ---------------------------------------------------------------
+   2. Nullify the template's "floating card" layout
+      (the template sets position:fixed + overflow:hidden on
+       .page-wrapper which breaks normal scrolling)
+--------------------------------------------------------------- */
+.lm-animated-bg { display: none; }
+
+.page-wrapper {
+  all: unset;
+  display: block;
+  background: #fff;
+  min-height: 100vh;
+}
+
+.page-content.site-content {
+  all: unset;
+  display: block;
+  background: #fff;
+  min-height: 100vh;
+}
+
+/* Hide original sidebar header & right decorative sidebar */
+#site_header.header,
+.r-sidebar {
+  display: none !important;
+}
+
+/* ---------------------------------------------------------------
+   Sticky footer — content-area is the flex column that fills
+   the remaining viewport height after the nav (68px)
+--------------------------------------------------------------- */
+.content-area {
+  position: static !important;
+  overflow: visible !important;
+  height: auto !important;
+  width: 100% !important;
+  display: flex !important;
+  flex-direction: column !important;
+  min-height: calc(100vh - 68px) !important;
+  float: none !important;
+  left: auto !important;
+  top: auto !important;
+  transform: none !important;
+}
+
+/* single-page-content grows to push footer down */
+.single-page-content {
+  position: static !important;
+  overflow: visible !important;
+  height: auto !important;
+  width: 100% !important;
+  display: block !important;
+  flex: 1 1 auto !important;
+  float: none !important;
+  left: auto !important;
+  top: auto !important;
+  transform: none !important;
+}
+
+/* Footer always at bottom */
+.content-area > .site-footer {
+  margin-top: auto;
+}
+
+/* Remove preloader from document flow after fade */
+.preloader {
+  position: fixed;
+  z-index: 9999;
+  background: #fff;
+}
+
+/* ---------------------------------------------------------------
+   3. Content wrapper — max-width centred
+--------------------------------------------------------------- */
+.content-wrapper {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 40px 40px 60px;
+}
+
+.page-title {
+  margin-bottom: 32px;
+  text-align: center;
+}
+
+/* Footer */
+.site-footer.clearfix {
+  max-width: 1200px;
+  margin: 20px auto 0;
+  padding: 20px 40px;
+  border-top: 1px solid #f0f0f0;
+  display: flex !important;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 8px;
+  float: none !important;
+}
+
+.footer-social {
+  float: none !important;
+}
+
+.footer-copyrights {
+  float: none !important;
+}
+
+.footer-copyrights p {
+  margin: 0;
+  font-size: 13px;
+  color: #999;
+}
+
+.footer-social-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.footer-social-links a {
+  display: inline-block;
+  padding: 7px 16px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #444 !important;
+  text-decoration: none !important;
+  background: #fff;
+  border: 1px solid #ddd;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+  transition: background 0.18s, color 0.18s, border-color 0.18s;
+}
+
+.footer-social-links a:hover {
+  background: #666;
+  border-color: #666;
+  color: #fff !important;
+  box-shadow: none;
+}
+
+/* ---------------------------------------------------------------
+   4. Top Navigation Bar
+--------------------------------------------------------------- */
+.fw-topnav {
+  position: sticky;
+  top: 0;
+  z-index: 500;
+  background: #fff;
+  box-shadow: 0 2px 16px rgba(0, 0, 0, 0.07);
+  width: 100%;
+}
+
+.fw-topnav-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 40px;
+  max-width: 1280px;
+  margin: 0 auto;
+  height: 68px;
+  position: relative;
+}
+
+/* Brand */
+.fw-nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none !important;
+  flex-shrink: 0;
+}
+
+.fw-nav-brand-photo {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center 50%;
+  border: 2px solid #0099e5;
+  flex-shrink: 0;
+  display: block;
+}
+
+.fw-nav-brand-name {
+  font-size: 15px;
+  font-weight: 600;
+  color: #222;
+  display: block;
+  line-height: 1.2;
+}
+
+.fw-nav-brand-tagline {
+  font-size: 11px;
+  color: #999;
+  display: block;
+  font-weight: 400;
+}
+
+/* Nav links */
+.fw-nav-links {
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  gap: 4px;
+  align-items: center;
+}
+
+.fw-nav-links a {
+  display: block;
+  padding: 8px 18px;
+  border-radius: 6px;
+  text-decoration: none !important;
+  color: #555 !important;
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+  transition: background 0.18s, color 0.18s;
+}
+
+.fw-nav-links a:hover,
+.fw-nav-links a.nav-active {
+  background: #0099e5;
+  color: #fff !important;
+}
+
+/* Hamburger toggle button */
+.fw-nav-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 4px;
+  height: 36px;
+}
+
+.fw-nav-toggle span {
+  display: block;
+  width: 22px;
+  height: 2px;
+  background: #333;
+  border-radius: 2px;
+  transition: all 0.25s;
+}
+
+.fw-nav-toggle.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+.fw-nav-toggle.open span:nth-child(2) { opacity: 0; }
+.fw-nav-toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+/* ---------------------------------------------------------------
+   5. Hero section — centered circular photo
+--------------------------------------------------------------- */
+.hero-centered {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 68px);
+  padding: 60px 20px;
+}
+
+.hero-centered-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  max-width: 680px;
+  width: 100%;
+}
+
+.hero-avatar {
+  width: 160px;
+  height: 160px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center 47%;
+  border: 4px solid #fff;
+  box-shadow: 0 4px 32px rgba(0,0,0,0.13);
+  margin-bottom: 24px;
+}
+
+.hero-rotation {
+  min-height: 36px;
+  margin-bottom: 12px;
+}
+
+.hero-rotation h4 {
+  color: #0099e5;
+  font-size: 15px;
+  font-weight: 500;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.hero-name {
+  font-size: 36px;
+  font-weight: 700;
+  margin: 0 0 16px;
+  line-height: 1.2;
+}
+
+.hero-name span {
+  color: #aaa;
+  font-weight: 400;
+}
+
+.hero-bio {
+  font-size: 15px;
+  color: #666;
+  line-height: 1.7;
+  margin: 0 0 28px;
+  max-width: 560px;
+}
+
+.hero-buttons {
+  display: flex;
+  gap: 12px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-bottom: 0;
+}
+
+/* Quotes below buttons */
+.hero-centered-inner .hero-quotes {
+  width: 100%;
+  max-width: 520px;
+}
+
+/* ---------------------------------------------------------------
+   6. Stats section
+--------------------------------------------------------------- */
+.stats-section {
+  padding: 48px 0;
+  border-top: 1px solid #f0f0f0;
+  border-bottom: 1px solid #f0f0f0;
+  margin: 48px 0;
+}
+
+.stats-grid {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+}
+
+.stat-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  padding: 0 40px;
+}
+
+.stat-value {
+  font-size: 52px;
+  font-weight: 700;
+  color: #0099e5;
+  line-height: 1;
+  margin-bottom: 8px;
+}
+
+.stat-label {
+  font-size: 13px;
+  color: #999;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 500;
+  text-align: center;
+}
+
+.stat-divider {
+  width: 1px;
+  height: 60px;
+  background: #e8e8e8;
+  flex-shrink: 0;
+}
+
+@media (max-width: 480px) {
+  .stats-grid {
+    flex-direction: column;
+    gap: 32px;
+  }
+  .stat-divider {
+    width: 60px;
+    height: 1px;
+  }
+  .stat-item {
+    padding: 0;
+  }
+  .stat-value {
+    font-size: 40px;
+  }
+}
+
+/* ---------------------------------------------------------------
+   7. Portfolio filters + Grid
+--------------------------------------------------------------- */
+.portfolio-filters {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 40px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+}
+
+.portfolio-filters li a,
+.portfolio-filters li a:hover,
+.portfolio-filters li a:not([href]) {
+  display: inline-block !important;
+  padding: 10px 28px !important;
+  border-radius: 6px !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  opacity: 1 !important;
+  color: #444 !important;
+  text-decoration: none !important;
+  background: #fff !important;
+  border: 1px solid #ddd !important;
+  box-shadow: 0 1px 4px rgba(0,0,0,0.06) !important;
+  cursor: pointer !important;
+  transition: background 0.18s, color 0.18s, border-color 0.18s !important;
+}
+
+.portfolio-filters li a:hover {
+  background: #666 !important;
+  border-color: #666 !important;
+  color: #fff !important;
+  box-shadow: none !important;
+}
+
+.portfolio-filters li.active a,
+.portfolio-filters li.active a:hover {
+  background: #0099e5 !important;
+  border-color: #0099e5 !important;
+  color: #fff !important;
+  box-shadow: none !important;
+}
+
+/* Portfolio grid — centered, max-width constrained */
+.portfolio-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.portfolio-grid figure {
+  margin: 0;
+  overflow: hidden;
+  border-radius: 8px;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  transition: box-shadow 0.2s, transform 0.2s;
+  background: #fff;
+  position: relative; /* contains absolutely-positioned children from main.css */
+}
+
+/* main.css sets .portfolio-grid .project-desc { position:absolute; opacity:0 }
+   which makes it an invisible full-card overlay. We want it static and visible. */
+.portfolio-grid .project-desc {
+  position: static !important;
+  opacity: 1 !important;
+}
+
+.portfolio-grid figure:hover {
+  box-shadow: 0 6px 28px rgba(0,0,0,0.14);
+  transform: translateY(-2px);
+}
+
+.portfolio-item-img {
+  overflow: hidden;
+  height: 160px;
+  background: #f5f6f8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.portfolio-item-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top;
+  transition: transform 0.3s;
+}
+
+/* Logo/tool images — contain so they don't get cropped */
+.portfolio-item-img img.img-contain {
+  object-fit: contain;
+  padding: 16px;
+}
+
+.portfolio-grid figure:hover .portfolio-item-img img {
+  transform: scale(1.04);
+}
+
+.project-desc {
+  padding: 14px 16px 16px;
+}
+
+.project-desc-text h4.name {
+  font-size: 14px;
+  font-weight: 600;
+  margin: 0 0 4px;
+  color: #222;
+}
+
+.project-desc-text .category {
+  font-size: 12px;
+  color: #999;
+}
+
+/* Portfolio project page image */
+.portfolio-page-img img {
+  width: 100%;
+  border-radius: 4px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+}
+
+@media (max-width: 768px) {
+  .portfolio-grid {
+    grid-template-columns: repeat(2, 1fr);
+    max-width: 620px;
+  }
+}
+
+@media (max-width: 480px) {
+  .portfolio-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---------------------------------------------------------------
+   7. Quotes carousel inside hero (right column)
+--------------------------------------------------------------- */
+.hero-quotes {
+  margin-top: 32px;
+  padding-top: 24px;
+  border-top: 1px solid #eee;
+}
+
+.hero-quotes .testimonial-content {
+  background: transparent;
+  box-shadow: none;
+  padding: 0;
+}
+
+.hero-quotes .testimonial-picture {
+  display: none;
+}
+
+.hero-quotes .testimonial-icon,
+.hero-quotes .testimonial-icon-big {
+  display: none;
+}
+
+.hero-quotes .testimonial-text p {
+  font-size: 14px;
+  font-style: italic;
+  color: #666;
+  line-height: 1.7;
+  margin: 0 0 8px;
+}
+
+.hero-quotes .testimonial-author {
+  font-size: 12px;
+  font-weight: 600;
+  color: #0099e5;
+  margin: 0;
+}
+
+/* Owl nav dots for hero quotes */
+.hero-quotes .owl-dots {
+  margin-top: 10px;
+}
+
+/* ---------------------------------------------------------------
+   8. Equal-height info/fun-fact card rows
+--------------------------------------------------------------- */
+
+/* Fun-facts row — equal height cards */
+.row:has(> .col-xs-12.col-sm-4 > .fun-fact),
+.row:has(> .col-xs-12.col-sm-4 > .lm-info-block) {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.row:has(> .col-xs-12.col-sm-4 > .fun-fact) > .col-xs-12.col-sm-4,
+.row:has(> .col-xs-12.col-sm-4 > .lm-info-block) > .col-xs-12.col-sm-4 {
+  display: flex;
+}
+
+.col-xs-12.col-sm-4 > .fun-fact,
+.col-xs-12.col-sm-4 > .lm-info-block {
+  flex: 1;
+}
+
+/* ---------------------------------------------------------------
+   9. Project detail page layout
+--------------------------------------------------------------- */
+.project-page-header {
+  margin-bottom: 28px;
+}
+
+.back-link {
+  display: inline-block;
+  font-size: 13px;
+  color: #999 !important;
+  text-decoration: none !important;
+  transition: color 0.15s;
+}
+
+.back-link:hover {
+  color: #0099e5 !important;
+}
+
+.project-page-header .back-link {
+  margin-bottom: 12px;
+}
+
+.project-page-header h1 {
+  margin: 0;
+}
+
+/* ---------------------------------------------------------------
+   10. Tags (no cursor change)
+--------------------------------------------------------------- */
+.tags li a {
+  cursor: default;
+}
+
+/* ---------------------------------------------------------------
+   9. Blog grid + post styles
+--------------------------------------------------------------- */
+.blog-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 8px;
+}
+
+.blog-card {
+  display: flex;
+  flex-direction: column;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+  background: #fff;
+  text-decoration: none !important;
+  color: inherit !important;
+  transition: box-shadow 0.2s, transform 0.2s;
+}
+
+.blog-card:hover {
+  box-shadow: 0 6px 28px rgba(0,0,0,0.13);
+  transform: translateY(-2px);
+}
+
+.blog-card-cover {
+  height: 180px;
+  overflow: hidden;
+}
+
+.blog-card-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s;
+}
+
+.blog-card:hover .blog-card-cover img {
+  transform: scale(1.04);
+}
+
+.blog-card-body {
+  padding: 20px;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+
+.blog-card-date {
+  font-size: 12px;
+  color: #aaa;
+  margin: 0 0 8px;
+}
+
+.blog-card-title {
+  font-size: 16px;
+  font-weight: 600;
+  margin: 0 0 10px;
+  color: #222;
+  line-height: 1.4;
+}
+
+.blog-card-excerpt {
+  font-size: 13px;
+  color: #777;
+  line-height: 1.6;
+  margin: 0 0 14px;
+  flex: 1;
+}
+
+.blog-card-tags {
+  margin-top: auto;
+}
+
+/* Post page */
+.post-meta {
+  font-size: 13px;
+  color: #aaa;
+  margin: 6px 0 0;
+}
+
+.post-tag {
+  display: inline-block;
+  background: #f0f2f5;
+  color: #666;
+  font-size: 11px;
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+.post-body {
+  max-width: 720px;
+  font-size: 15px;
+  line-height: 1.8;
+  color: #444;
+}
+
+.post-body h2 { font-size: 20px; margin: 32px 0 12px; }
+.post-body h3 { font-size: 17px; margin: 24px 0 10px; }
+.post-body p  { margin: 0 0 16px; }
+.post-body ul, .post-body ol { padding-left: 24px; margin: 0 0 16px; }
+.post-body li { margin-bottom: 6px; }
+.post-body code {
+  background: #f4f4f4;
+  padding: 2px 6px;
+  border-radius: 3px;
+  font-size: 13px;
+}
+.post-body pre {
+  background: #f4f4f4;
+  padding: 16px 20px;
+  border-radius: 6px;
+  overflow-x: auto;
+  margin: 0 0 20px;
+}
+.post-body blockquote {
+  border-left: 3px solid #0099e5;
+  padding: 8px 16px;
+  margin: 0 0 16px;
+  color: #666;
+  font-style: italic;
+}
+
+/* Single inline image */
+.post-body img {
+  width: 100%;
+  max-height: 480px;
+  object-fit: cover;
+  border-radius: 8px;
+  margin: 24px 0;
+  box-shadow: 0 2px 12px rgba(0,0,0,.1);
+  display: block;
+}
+
+/* 2-column photo grid: wrap two imgs in <div class="post-photos"> */
+.post-photos {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+  margin: 24px 0;
+}
+.post-photos img {
+  margin: 0;
+  height: 280px;
+  width: 100%;
+}
+
+/* 3-column photo grid: <div class="post-photos post-photos--3"> */
+.post-photos--3 {
+  grid-template-columns: 1fr 1fr 1fr;
+}
+.post-photos--3 img {
+  height: 220px;
+}
+
+@media (max-width: 600px) {
+  .post-photos,
+  .post-photos--3 {
+    grid-template-columns: 1fr;
+  }
+  .post-photos img,
+  .post-photos--3 img {
+    height: 240px;
+  }
+}
+
+@media (max-width: 900px) {
+  .blog-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 480px) {
+  .blog-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ---------------------------------------------------------------
+   10. Calendly widget
+--------------------------------------------------------------- */
+.calendly-inline-widget {
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+/* ---------------------------------------------------------------
+   10. Responsive
+--------------------------------------------------------------- */
+@media (max-width: 900px) {
+  .fw-topnav-inner {
+    padding: 0 20px;
+  }
+
+  .fw-nav-toggle {
+    display: flex;
+  }
+
+  .fw-nav-links {
+    display: none;
+    position: absolute;
+    top: 68px;
+    left: 0;
+    right: 0;
+    background: #fff;
+    flex-direction: column;
+    align-items: stretch;
+    border-top: 1px solid #f0f0f0;
+    box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+    padding: 8px 16px 16px;
+    gap: 2px;
+  }
+
+  .fw-nav-links.open {
+    display: flex;
+  }
+
+  .fw-nav-links a {
+    padding: 10px 16px;
+    font-size: 15px;
+  }
+
+  .content-wrapper {
+    padding: 24px 20px 40px;
+  }
+
+  .site-footer.clearfix {
+    padding: 20px;
+  }
+
+  .hero-centered {
+    min-height: 50vh;
+    padding: 40px 20px;
+  }
+
+  .hero-avatar {
+    width: 120px;
+    height: 120px;
+  }
+
+  .hero-name {
+    font-size: 28px;
+  }
+}
+
+@media (max-width: 480px) {
+  .fw-nav-brand-tagline {
+    display: none;
+  }
+}
