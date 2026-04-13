@@ -793,6 +793,12 @@ body {
   margin: 0 0 16px;
   color: #666;
   font-style: italic;
+  position: static;
+}
+
+.post-body blockquote:before,
+.post-body blockquote:after {
+  display: none;
 }
 
 /* Single inline image */
