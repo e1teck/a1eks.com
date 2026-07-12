@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>ASCII Portrait in Your GitHub Profile README — Aleksei Ryzhkov</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="description" content="How to turn a photo into ASCII art with a neofetch-style info panel and show it on your GitHub profile — with automatic dark/light theme switching. Python, Pillow, and a bit of SVG." />
+    <link rel="canonical" href="https://a1eks.com/blog/ascii-portrait-github-profile.html" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://a1eks.com/blog/ascii-portrait-github-profile.html" />
+    <meta property="og:title" content="ASCII Portrait in Your GitHub Profile README" />
+    <meta property="og:description" content="How to turn a photo into ASCII art with a neofetch-style info panel and show it on your GitHub profile — with automatic dark/light theme switching. Python, Pillow, and a bit of SVG." />
+    <meta property="og:image" content="https://a1eks.com/img/blog/ascii-profile-dark.png" />
+    <meta property="article:published_time" content="2026-07-12" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/custom.css">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-GS7V13EPN1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date()); gtag('config', 'G-GS7V13EPN1');
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BlogPosting",
+      "headline": "ASCII Portrait in Your GitHub Profile README",
+      "description": "How to turn a photo into ASCII art with a neofetch-style info panel and show it on your GitHub profile — with automatic dark/light theme switching. Python, Pillow, and a bit of SVG.",
+      "datePublished": "2026-07-12",
+      "author": {
+        "@type": "Person",
+        "name": "Aleksei Ryzhkov",
+        "url": "https://a1eks.com"
+      },
+      "url": "https://a1eks.com/blog/ascii-portrait-github-profile.html"
+    }
+    </script>
+  </head>
+  <body>
+    <div class="preloader">
+      <div class="preloader-animation"><div class="preloader-spinner"></div></div>
+    </div>
+
+    <nav class="fw-topnav">
+      <div class="fw-topnav-inner">
+        <a href="/index.html" class="fw-nav-brand">
+          <img src="/img/profile.jpg" class="fw-nav-brand-photo" alt="Aleksei Ryzhkov">
+          <div>
+            <span class="fw-nav-brand-name">Aleksei Ryzhkov</span>
+            <span class="fw-nav-brand-tagline">Python Backend Developer</span>
+          </div>
+        </a>
+        <button class="fw-nav-toggle" id="fw-nav-toggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        <ul class="fw-nav-links" id="fw-nav-links">
+          <li><a href="/index.html">About</a></li>
+          <li><a href="/resume.html">Resume</a></li>
+          <li><a href="/portfolio.html">Portfolio</a></li>
+          <li><a href="/blog.html" class="nav-active">Blog</a></li>
+          <li><a href="/contact.html">Contact</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="page-wrapper">
+      <div class="page-content site-content">
+        <div class="content-area">
+          <div class="single-page-content">
+            <div class="content-wrapper">
+
+              <div class="project-page-header">
+                <a href="/blog.html" class="back-link">&larr; Back to Blog</a>
+                <h1>ASCII Portrait in Your GitHub Profile README</h1>
+                <p class="post-meta">
+                  <span>2026-07-12</span>
+                  &nbsp;·&nbsp;
+<span class="post-tag">Python</span> <span class="post-tag">GitHub</span> <span class="post-tag">Pillow</span>                </p>
+              </div>
+
+              <div class="post-cover" style="margin-bottom:32px;">
+                <img src="/img/blog/ascii-profile-dark.svg" alt="ASCII Portrait in Your GitHub Profile README"
+                     style="max-width:100%;height:auto;max-height:480px;display:block;margin:0 auto;border-radius:8px;box-shadow:0 2px 16px rgba(0,0,0,.1)">
+              </div>
+
+              <div class="post-body">
+                <p>GitHub renders a profile README from the repository whose name <strong>matches your username</strong> (e.g. <code>e1teck/e1teck</code>). You can't color text in markdown — GitHub strips inline styles during sanitization. The only way to get colored monospace art is to embed it as an <strong>SVG image</strong>. To make it look right in both dark and light themes, you build two SVGs and switch them with a <code>&lt;picture&gt;</code> tag.</p>
+
+<p>Three building blocks:</p>
+<ol>
+  <li>A Python (Pillow) script that converts a photo into ASCII characters.</li>
+  <li>A script that assembles the characters plus an info panel into two SVG files.</li>
+  <li>A README.md with a <code>&lt;picture&gt;</code> tag in the <code>&lt;username&gt;/&lt;username&gt;</code> repo.</li>
+</ol>
+
+<h2>Step 1. Photo &rarr; ASCII</h2>
+<p>Downscale the photo to a character grid and replace each pixel with a glyph of matching "density". For dark theme, bright pixels become dense glyphs (<code>@M$%</code>); for light theme it's inverted — dark pixels get the dense glyphs.</p>
+<p>Key tricks without which you get mush:</p>
+<ul>
+  <li><strong>Remove the background.</strong> Flood fill from the frame edges marks the background, which becomes a mask. Important: only seed the fill from light pixels (brightness &gt; 120), otherwise it eats dark clothing. Leftover background islands are removed via connected components — keep only the largest one.</li>
+  <li><strong>Boost contrast and sharpness</strong> before converting: <code>ImageEnhance.Contrast(1.4)</code> + <code>UnsharpMask</code> — otherwise facial features vanish.</li>
+  <li><strong>Vertical squeeze factor ~0.5</strong>: a terminal glyph is roughly twice as tall as it is wide, so grid height = <code>width &times; photo_aspect &times; 0.48</code>.</li>
+  <li><strong>Monochrome beats color.</strong> Per-glyph photo colors look fancy but destroy density contrast — the face reads worse.</li>
+</ul>
+
+<p>Minimal example:</p>
+<pre><code>from PIL import Image, ImageOps, ImageEnhance, ImageFilter
+
+W = 116                       # characters wide
+ramp = " .'`^,:;i!|(fjrxnkmpqwZO%$M@"   # sparse -&gt; dense
+
+img = Image.open("photo.jpg")
+g = ImageOps.grayscale(img)
+g = ImageEnhance.Contrast(g).enhance(1.45)
+g = g.filter(ImageFilter.UnsharpMask(radius=3, percent=200))
+H = int(W * img.height / img.width * 0.48)
+g = g.resize((W, H))
+
+px = g.load()
+for y in range(H):
+    line = ""
+    for x in range(W):
+        v = px[x, y] / 255            # light theme: v = 1 - v
+        line += ramp[int(v * (len(ramp) - 1))]
+    print(line)</code></pre>
+
+<h2>Step 2. ASCII &rarr; SVG</h2>
+<p>SVG gives you three superpowers plain markdown text doesn't have:</p>
+<ul>
+  <li><strong>Colors</strong>: labels, values and progress bars are styled with CSS classes inside <code>&lt;style&gt;</code>.</li>
+  <li><strong>A smaller font for the art</strong>: panel at 14px, art at 7.5px. The same area fits a 116&times;75 grid instead of 60&times;38 — twice the detail.</li>
+  <li><strong><code>textLength</code></strong>: the viewer may not have your font, which would break line widths. <code>textLength="..." lengthAdjust="spacingAndGlyphs"</code> forces every line to an exact pixel width — alignment survives any font.</li>
+</ul>
+
+<p>Each line is a <code>&lt;text&gt;</code> element with <code>xml:space="preserve"</code> (or the browser collapses spaces); colored fragments are <code>&lt;tspan class="..."&gt;</code>:</p>
+<pre><code>&lt;svg xmlns="http://www.w3.org/2000/svg" width="1081" height="709" viewBox="0 0 1081 709"&gt;
+  &lt;style&gt;
+    text { font-family: 'SFMono-Regular', Consolas, Menlo, monospace;
+           font-size: 14px; white-space: pre }
+    .art   { font-size: 7.5px; fill: #c9d1d9 }
+    .label { fill: #ffa657 }
+    .value { fill: #79c0ff }
+    .barF  { fill: #58a6ff }
+  &lt;/style&gt;
+  &lt;rect width="100%" height="100%" fill="#0d1117" rx="8"/&gt;
+  &lt;text x="14" y="27" xml:space="preserve" textLength="522.5"
+        lengthAdjust="spacingAndGlyphs"&gt;&lt;tspan class="label"&gt;. OS:&lt;/tspan&gt;&lt;tspan class="value"&gt; macOS, Linux&lt;/tspan&gt;&lt;/text&gt;
+  &lt;!-- ... art and panel lines ... --&gt;
+&lt;/svg&gt;</code></pre>
+
+<p>Progress bars are just <code>&#9608;</code> and <code>&#9617;</code> glyphs in tspans with different classes:</p>
+<pre><code>. Python:................... &#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9608;&#9617;&#9617; 90%</code></pre>
+
+<p>Colors come from GitHub's palette: dark theme — background <code>#0d1117</code>, text <code>#c9d1d9</code>, blue <code>#79c0ff</code>, orange <code>#ffa657</code>; light theme — background <code>#ffffff</code>, text <code>#24292f</code>, blue <code>#0550ae</code>, red <code>#cf222e</code>.</p>
+
+<h2>Step 3. Publishing</h2>
+<ol>
+  <li>Create a <strong>public</strong> repo named after your username: <code>github.com/new</code> &rarr; name <code>e1teck</code>. GitHub confirms with "You found a secret!".</li>
+  <li>Upload <code>dark_mode.svg</code> and <code>light_mode.svg</code> — into the same repo or any other one (e.g. your website repo, then the images are also served from your own domain).</li>
+  <li>In README.md, use <code>&lt;picture&gt;</code> — the browser picks the version matching the visitor's theme:</li>
+</ol>
+<pre><code>&lt;a href="https://a1eks.com"&gt;
+  &lt;picture&gt;
+    &lt;source media="(prefers-color-scheme: dark)"
+            srcset="https://raw.githubusercontent.com/e1teck/a1eks.com/master/img/dark_mode.svg"&gt;
+    &lt;img alt="Alexei Ryzhkov" src="https://raw.githubusercontent.com/e1teck/a1eks.com/master/img/light_mode.svg"&gt;
+  &lt;/picture&gt;
+&lt;/a&gt;</code></pre>
+
+<h2>Pitfalls I hit</h2>
+<ul>
+  <li><strong>Art looks like a negative</strong> — invert the mapping for light theme: dark &rarr; dense glyphs.</li>
+  <li><strong>Background turned into glyph noise</strong> — flood fill from edges + mask + drop small connected components.</li>
+  <li><strong>Flood fill ate the dark t-shirt</strong> — only seed the fill from pixels brighter than 120.</li>
+  <li><strong>SVG lines misalign on other fonts</strong> — <code>textLength</code> + <code>lengthAdjust="spacingAndGlyphs"</code>.</li>
+  <li><strong>Old image shows after updating the SVG</strong> — that's GitHub's camo cache; it refreshes in a few minutes.</li>
+  <li><strong>Default branch isn't <code>main</code></strong> — use the real branch name (<code>master</code>) in raw URLs.</li>
+</ul>
+
+<p>The result lives at <a href="https://github.com/e1teck" target="_blank">github.com/e1teck</a>.</p>
+
+              </div>
+
+              <div class="p-30"></div>
+              <a href="/blog.html" class="back-link">&larr; Back to Blog</a>
+
+            </div>
+          </div>
+
+          <footer class="site-footer clearfix">
+            <div class="footer-social">
+              <ul class="footer-social-links">
+                <li><a href="https://github.com/e1teck/" target="_blank">GitHub</a></li>
+                <li><a href="https://t.me/the_a1eks" target="_blank">Telegram</a></li>
+                <li><a href="https://twitter.com/Alexey38483641" target="_blank">Twitter</a></li>
+                <li><a href="https://www.linkedin.com/in/the-a1eks" target="_blank">LinkedIn</a></li>
+              </ul>
+            </div>
+            <div class="footer-copyrights">
+              <p>© 2020 Aleksei Ryzhkov. All rights reserved.</p>
+            </div>
+          </footer>
+        </div>
+      </div>
+    </div>
+
+    <script src="/js/jquery-2.1.3.min.js"></script>
+    <script src="/js/imagesloaded.pkgd.min.js"></script>
+    <script src="/js/app.js"></script>
+  </body>
+</html>
