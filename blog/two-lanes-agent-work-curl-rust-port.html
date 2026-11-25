@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Two Lanes: What the curl Rust Port Teaches About Agent Work — Aleksei Ryzhkov</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+    <meta name="description" content="The agent-driven Rust port of curl ran on a side lane while the mainline kept its normal cadence. A reusable architecture for delegating mechanical, verifiable work to agents." />
+    <link rel="canonical" href="https://a1eks.com/blog/two-lanes-agent-work-curl-rust-port.html" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://a1eks.com/blog/two-lanes-agent-work-curl-rust-port.html" />
+    <meta property="og:title" content="Two Lanes: What the curl Rust Port Teaches About Agent Work" />
+    <meta property="og:description" content="The agent-driven Rust port of curl ran on a side lane while the mainline kept its normal cadence. A reusable architecture for delegating mechanical, verifiable work to agents." />
+    <meta property="og:image" content="https://a1eks.com/img/blog/two-lanes-agent-work-curl-rust-port.jpg" />
+    <meta property="article:published_time" content="2026-11-19" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/css/main.css">
+    <link rel="stylesheet" href="/css/custom.css">
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-GS7V13EPN1"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date()); gtag('config', 'G-GS7V13EPN1');
+    </script>
+    <script type="application/ld+json">
+    {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  "headline": "Two Lanes: What the curl Rust Port Teaches About Agent Work",
+  "description": "The agent-driven Rust port of curl ran on a side lane while the mainline kept its normal cadence. A reusable architecture for delegating mechanical, verifiable work to agents.",
+  "datePublished": "2026-11-19",
+  "author": {
+    "@type": "Person",
+    "name": "Aleksei Ryzhkov",
+    "url": "https://a1eks.com"
+  },
+  "url": "https://a1eks.com/blog/two-lanes-agent-work-curl-rust-port.html"
+}
+    </script>
+  </head>
+  <body>
+    <div class="preloader">
+      <div class="preloader-animation"><div class="preloader-spinner"></div></div>
+    </div>
+
+    <nav class="fw-topnav">
+      <div class="fw-topnav-inner">
+        <a href="/index.html" class="fw-nav-brand">
+          <img src="/img/profile.jpg" class="fw-nav-brand-photo" alt="Aleksei Ryzhkov">
+          <div>
+            <span class="fw-nav-brand-name">Aleksei Ryzhkov</span>
+            <span class="fw-nav-brand-tagline">Python Backend Developer</span>
+          </div>
+        </a>
+        <button class="fw-nav-toggle" id="fw-nav-toggle" aria-label="Toggle menu"><span></span><span></span><span></span></button>
+        <ul class="fw-nav-links" id="fw-nav-links">
+          <li><a href="/index.html">About</a></li>
+          <li><a href="/resume.html">Resume</a></li>
+          <li><a href="/portfolio.html">Portfolio</a></li>
+          <li><a href="/blog.html" class="nav-active">Blog</a></li>
+          <li><a href="/contact.html">Contact</a></li>
+        </ul>
+      </div>
+    </nav>
+
+    <div class="page-wrapper">
+      <div class="page-content site-content">
+        <div class="content-area">
+          <div class="single-page-content">
+            <div class="content-wrapper">
+
+              <div class="project-page-header">
+                <a href="/blog.html" class="back-link">&larr; Back to Blog</a>
+                <h1>Two Lanes: What the curl Rust Port Teaches About Agent Work</h1>
+                <p class="post-meta">
+                  <span>2026-11-19</span>
+                  &nbsp;·&nbsp;
+<span class="post-tag">AI Engineering</span> <span class="post-tag">Software Engineering</span> <span class="post-tag">LLM</span> <span class="post-tag">Code Review</span>
+                </p>
+              </div>
+
+              <div class="post-cover" style="margin-bottom:32px;">
+                <img src="/img/blog/two-lanes-agent-work-curl-rust-port.jpg" alt="Two Lanes: What the curl Rust Port Teaches About Agent Work"
+                     style="max-width:100%;height:auto;max-height:480px;display:block;margin:0 auto;border-radius:8px;box-shadow:0 2px 16px rgba(0,0,0,.1)">
+              </div>
+
+              <div class="post-body">
+<p>185,000 lines of C, converted into 340,000 lines of Rust in a little over three weeks. In the same period, the actual project merged over 300 commits and shipped about 200 bugfixes.</p>
+
+<p>That is Daniel Stenberg on the agent-driven Rust port of curl, as quoted by Simon Willison. The numbers matter less for raw speed and more for what they say about structure.</p>
+
+<p>Two efforts ran in parallel and neither blocked the other. The agent lane carried the bulk rewrite with no release pressure. The mainline kept its normal cadence: merges, fixes, users who never noticed a thing.</p>
+
+<p>That is a reusable architecture for agent work in any codebase:</p>
+
+<ul>
+  <li>Mechanical, verifiable bulk work goes to the agent lane: ports, migrations, boilerplate, docs.</li>
+  <li>The mainline keeps human cadence: review, ship, incident response.</li>
+  <li>Verification is the interface between the lanes: tests, type checks, diff review. If a lane cannot be verified cheaply, do not parallelize it.</li>
+  <li>Generated lines become an asset only after they pass mainline review and land as normal commits.</li>
+</ul>
+
+<p>My take: the interesting question is not whether agents can produce 340k lines. It is which parts of your project can move on a side lane without touching the mainline. Those are the parts worth delegating first.</p>
+
+<h3>Sources</h3>
+<ul>
+  <li><a href="https://simonwillison.net/2026/Nov/18/daniel-stenberg/" target="_blank" rel="noopener">https://simonwillison.net/2026/Nov/18/daniel-stenberg/</a></li>
+</ul>
+              </div>
+
+              <div class="p-30"></div>
+              <a href="/blog.html" class="back-link">&larr; Back to Blog</a>
+
+            </div>
+          </div>
+
+          <footer class="site-footer clearfix">
+            <div class="footer-social">
+              <ul class="footer-social-links">
+                <li><a href="https://github.com/e1teck/" target="_blank">GitHub</a></li>
+                <li><a href="https://t.me/the_a1eks" target="_blank">Telegram</a></li>
+                <li><a href="https://twitter.com/Alexey38483641" target="_blank">Twitter</a></li>
+                <li><a href="https://www.linkedin.com/in/the-a1eks" target="_blank">LinkedIn</a></li>
+              </ul>
+            </div>
+            <div class="footer-copyrights">
+              <p>© 2020 Aleksei Ryzhkov. All rights reserved.</p>
+            </div>
+          </footer>
+        </div>
+      </div>
+    </div>
+
+    <script src="/js/jquery-2.1.3.min.js"></script>
+    <script src="/js/imagesloaded.pkgd.min.js"></script>
+    <script src="/js/app.js"></script>
+  </body>
+</html>
